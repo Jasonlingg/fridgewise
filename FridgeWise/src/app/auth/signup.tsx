@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/src/config/firebaseConfig';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '@/src/config/firebaseConfig';
 
 export default function SignupScreen() {
   const router = useRouter();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
-    if (!email || !password) {
+    if (!firstName || !lastName || !email || !password) {
       Alert.alert('Error', 'Please fill in all fields.');
       return;
     }
@@ -19,7 +22,17 @@ export default function SignupScreen() {
     setLoading(true);
     try {
       // Firebase signup logic
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Store user data in Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        firstName,
+        lastName,
+        email,
+        fridges: [], // Initialize with an empty array of fridges
+      });
+
       Alert.alert('Success', 'Account created successfully!');
       router.replace('/(tabs)/home'); // Navigate to the home screen
     } catch (error: any) {
@@ -31,26 +44,36 @@ export default function SignupScreen() {
 
   return (
     <View style={styles.container}>
-    <Text style={styles.title}>Signup</Text>
-    <TextInput
-      style={styles.input}
-      placeholder="Email"
-      value={email}
-      onChangeText={setEmail}
-      keyboardType="email-address"
-      autoCapitalize="none"
-    />
-    <TextInput
-      style={styles.input}
-      placeholder="Password"
-      value={password}
-      onChangeText={setPassword}
-      secureTextEntry
-    />
-    <Button title={loading ? 'Signing Up...' : 'Signup'} onPress={handleSignup} disabled={loading} />
-    <View style={styles.spacing} />
-    <Button title="Go Back" onPress={() => router.back()} />
-  </View>
+      <Text style={styles.title}>Signup</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="First Name"
+        value={firstName}
+        onChangeText={setFirstName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Last Name"
+        value={lastName}
+        onChangeText={setLastName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <Button title={loading ? 'Signing Up...' : 'Signup'} onPress={handleSignup} disabled={loading} />
+    </View>
   );
 }
 
@@ -73,8 +96,5 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 5,
     marginBottom: 10,
-  },
-  spacing: {
-    height: 10, // Space between buttons
   },
 });
