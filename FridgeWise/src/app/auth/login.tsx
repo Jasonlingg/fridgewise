@@ -21,6 +21,7 @@ export default function LoginScreen() {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert('Success', 'Logged in successfully!');
       router.replace('/(tabs)/home'); // Navigate to the home screen
+      console.log('User logged in:', auth.currentUser?.email);
     } catch (error: any) {
       Alert.alert('Error', error.message);
     } finally {

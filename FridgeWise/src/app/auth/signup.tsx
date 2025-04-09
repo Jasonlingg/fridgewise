@@ -24,6 +24,7 @@ export default function SignupScreen() {
       // Firebase signup logic
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      console.log('User signed up:', auth.currentUser?.email);
 
       // Store user data in Firestore
       await setDoc(doc(db, 'users', user.uid), {

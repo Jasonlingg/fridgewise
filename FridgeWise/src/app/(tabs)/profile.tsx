@@ -15,7 +15,7 @@ export default function ProfileScreen() {
       const user = auth.currentUser;
       if (!user) {
         Alert.alert('Error', 'No user is currently logged in.');
-        router.replace('/'); // Redirect to the login screen
+        router.replace('/');
         return;
       }
 

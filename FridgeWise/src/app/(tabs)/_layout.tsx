@@ -3,6 +3,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import Colors from '@/src/constants/Colors';
 import { useColorScheme } from '@/src/components/useColorScheme';
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/src/config/firebaseConfig";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -10,6 +12,14 @@ function TabBarIcon(props: {
 }) {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("User is logged in:", user.email);
+  } else {
+    console.log("No user is logged in");
+  }
+});
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
