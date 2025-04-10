@@ -38,7 +38,7 @@ export default function ProfileScreen() {
     try {
       await signOut(auth);
       Alert.alert('Success', 'You have been signed out.');
-      router.replace('/'); // Redirect to the login screen
+      router.replace('/');
     } catch (error: any) {
       Alert.alert('Error', error.message);
     }

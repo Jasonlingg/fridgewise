@@ -14,7 +14,7 @@ export default function CreateFridgeScreen() {
       return;
     }
 
-    // setLoading(true);
+    setLoading(true);
     try {
       const user = auth.currentUser;
       if (!user) {

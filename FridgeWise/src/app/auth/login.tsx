@@ -17,10 +17,9 @@ export default function LoginScreen() {
 
     setLoading(true);
     try {
-      // Firebase login logic
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert('Success', 'Logged in successfully!');
-      router.replace('/(tabs)/home'); // Navigate to the home screen
+      router.replace('/(tabs)/home');
       console.log('User logged in:', auth.currentUser?.email);
     } catch (error: any) {
       Alert.alert('Error', error.message);
@@ -30,8 +29,8 @@ export default function LoginScreen() {
   };
 
   const handleBack = () => {
-    router.back(); // Navigate back to the previous screen
-  };
+    router.back();
+  }
 
   return (
     <View style={styles.container}>
