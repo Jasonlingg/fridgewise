@@ -28,34 +28,43 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        headerShown: false,
+        tabBarStyle: {
+          height: 60,
+          paddingBottom: 5,
+        },
       }}
     >
       <Tabs.Screen
         name="home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="home" color={color} />,
+          headerTitle: 'Home',
         }}
       />
       <Tabs.Screen
         name="fridge"
         options={{
           title: 'Fridge',
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="list" color={color} />,
+          headerTitle: 'My Fridge',
         }}
       />
       <Tabs.Screen
-        name="add-item"
+        name="cameraScreen"
         options={{
-          title: 'Add Item',
-          tabBarIcon: ({ color }) => <TabBarIcon name="plus" color={color} />,
+          title: 'Scan',
+          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="camera" color={color} />,
+          headerTitle: 'Scan Item',
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="user" color={color} />,
+          headerTitle: 'My Profile',
         }}
       />
     </Tabs>

@@ -13,21 +13,32 @@ export default function ProfileScreen() {
   const fetchUserData = async () => {
     try {
       const user = auth.currentUser;
+      console.log('Current user:', user?.uid);
+      
       if (!user) {
+        console.log('No user found in auth');
         Alert.alert('Error', 'No user is currently logged in.');
         router.replace('/');
         return;
       }
 
       const userDocRef = doc(db, 'users', user.uid);
+      console.log('Fetching user document from:', userDocRef.path);
+      
       const userDoc = await getDoc(userDocRef);
+      console.log('Document exists:', userDoc.exists());
+      console.log('Document data:', userDoc.data());
 
       if (userDoc.exists()) {
-        setUserData(userDoc.data());
+        const data = userDoc.data();
+        console.log('Setting user data:', data);
+        setUserData(data);
       } else {
+        console.log('User document does not exist');
         Alert.alert('Error', 'User data not found.');
       }
     } catch (error: any) {
+      console.error('Error fetching user data:', error);
       Alert.alert('Error', error.message);
     } finally {
       setLoading(false);
@@ -45,6 +56,7 @@ export default function ProfileScreen() {
   };
 
   useEffect(() => {
+    console.log('Profile screen mounted');
     fetchUserData();
   }, []);
 
